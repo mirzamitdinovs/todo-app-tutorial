@@ -32,7 +32,7 @@ const initialTodos: Todo[] = [
 ];
 const page = () => {
 	const [todos, setTodos] = useState(initialTodos);
-	const inputRef = useRef(null);
+	const inputRef = useRef<any>(null);
 
 	const addNewTodo = (e: React.FormEvent) => {
 		e.preventDefault();
