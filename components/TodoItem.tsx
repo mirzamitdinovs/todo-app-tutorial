@@ -3,8 +3,9 @@ import Button from './Button';
 
 interface iProps {
 	todo: Todo;
+	deleteTodo: (id: number | string) => void;
 }
-const TodoItem = ({ todo }: iProps) => {
+const TodoItem = ({ todo, deleteTodo }: iProps) => {
 	return (
 		<div className='bg-slate-100 p-3 items-center gap-2 flex'>
 			<span className='border size-6 border-green-500 rounded flex items-center justify-center'>
@@ -31,7 +32,11 @@ const TodoItem = ({ todo }: iProps) => {
 				{todo.title}
 			</p>
 			<Button title='Edit' />
-			<Button buttonType='error' title='Delete' />
+			<Button
+				onClick={() => deleteTodo(todo.id)}
+				buttonType='error'
+				title='Delete'
+			/>
 		</div>
 	);
 };

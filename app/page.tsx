@@ -1,8 +1,10 @@
+'use client';
 import Button from '@/components/Button';
 import TodoItem from '@/components/TodoItem';
 import { Todo } from '@/types/todo.type';
-
-const todos: Todo[] = [
+import { useRef, useState } from 'react';
+import { v4 as uuidV4 } from 'uuid';
+const initialTodos: Todo[] = [
 	{
 		userId: 1,
 		id: 1,
@@ -29,19 +31,40 @@ const todos: Todo[] = [
 	},
 ];
 const page = () => {
+	const [todos, setTodos] = useState(initialTodos);
+	const inputRef = useRef(null);
+
+	const addNewTodo = (e: React.FormEvent) => {
+		e.preventDefault();
+		const newTodo = {
+			userId: 1,
+			id: uuidV4(),
+			title: inputRef.current?.value,
+			completed: false,
+		};
+
+		setTodos([...todos, newTodo]);
+		inputRef.current.value = null;
+	};
+
+	const deleteTodo = (id: number | string) => {
+		setTodos(todos.filter((item) => item.id !== id));
+	};
+
+	console.log('site refreshed');
 	return (
 		<div className='flex flex-1 justify-center items-center pt-10 h-full'>
 			<div className='w-1/2 bg-white space-y-5 py-10 px-5'>
 				<h3 className='text-3xl font-bold text-center'>Todo App</h3>
 
-				<form className='flex'>
-					<input className='border-2 flex-1' />
+				<form onSubmit={addNewTodo} className='flex'>
+					<input required ref={inputRef} className='border-2 flex-1' />
 					<Button title='Add Todo' />
 				</form>
 
 				<div className='space-y-3 h-[500px] overflow-auto'>
 					{todos.map((todo) => (
-						<TodoItem key={todo.id} todo={todo} />
+						<TodoItem deleteTodo={deleteTodo} key={todo.id} todo={todo} />
 					))}
 				</div>
 			</div>
